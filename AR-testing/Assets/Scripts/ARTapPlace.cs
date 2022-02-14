@@ -11,7 +11,7 @@ public class ARTapPlace : MonoBehaviour
     public GameObject placement;
     private ARSessionOrigin arOrigin;
     private Pose placementPose; // Simple data structure that represents a 3D-point
-    private ARRaycastManager rayCastMgr; // Needed to Raycast
+    public ARRaycastManager rayCastMgr; // Needed to Raycast
     private bool placementValid = false;
 
     // Start is called before the first frame update
@@ -50,9 +50,6 @@ public class ARTapPlace : MonoBehaviour
         placementValid = hitmonchan.Count > 0;
         if (placementValid) {
             placementPose = hitmonchan[0].pose;
-
-            var cameraForward
         }
-
     }
 }
