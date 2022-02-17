@@ -10,8 +10,8 @@ public class ARTapPlace : MonoBehaviour
 {
     [SerializeField]
     private GameObject placement;
-    public GameObject objToPlace;
-    private ARSessionOrigin arOrigin;
+    [SerializeField]
+    private GameObject objToPlace;
     private Pose placementPose; // Simple data structure that represents a 3D-point
     private ARRaycastManager rayCastMgr; // Needed to Raycast
     private ARPlaneManager arPlaneMgr;
@@ -21,7 +21,6 @@ public class ARTapPlace : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        arOrigin = FindObjectOfType<ARSessionOrigin>();
         rayCastMgr = this.GetComponent<ARRaycastManager>();
         arPlaneMgr = this.GetComponent<ARPlaneManager>();
     }
@@ -30,24 +29,30 @@ public class ARTapPlace : MonoBehaviour
     void Update()
     {
         if(!active) {
-                UpdatePlacementPose();
-                UpdatePlacementIndicator();
+            UpdatePlacementPose();
+            UpdatePlacementIndicator();
+            PlaceObject();
         }
-        PlaceObject();
     }
 
     /*  placeObject()
         Checks for input and validity of placement indicator to place the object
     */
     private void PlaceObject() {
-        if(!active && placementValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) { // Checks if plane valid, if screen touched and check phase of the fingers (the first) to see if it just began
+        if(placementValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) { // Checks if plane valid, if screen touched and check phase of the fingers (the first) to see if it just began
             Instantiate(objToPlace, placementPose.position, placementPose.rotation);
             active = true;
             DisablePlanes();
         }
     }
 
-    private void DisablePlanes() {
+    public void EnablePlanes() {
+        arPlaneMgr.enabled = true;
+        active = false;
+        placement.SetActive(true);
+    }
+
+    public void DisablePlanes() {
         arPlaneMgr.enabled = false;
         placement.SetActive(false);
     }
