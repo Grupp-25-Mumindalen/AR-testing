@@ -13,6 +13,7 @@ public class ARTapPlace : MonoBehaviour
     [SerializeField]
     private GameObject objToPlace;
     private Pose placementPose; // Simple data structure that represents a 3D-point
+    private ARSessionOrigin arOrigin;
     private ARRaycastManager rayCastMgr; // Needed to Raycast
     private ARPlaneManager arPlaneMgr;
     private bool placementValid = false;
@@ -21,6 +22,7 @@ public class ARTapPlace : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        arOrigin = FindObjectOfType<ARSessionOrigin>();
         rayCastMgr = this.GetComponent<ARRaycastManager>();
         arPlaneMgr = this.GetComponent<ARPlaneManager>();
     }
@@ -39,7 +41,7 @@ public class ARTapPlace : MonoBehaviour
         Checks for input and validity of placement indicator to place the object
     */
     private void PlaceObject() {
-        if(placementValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) { // Checks if plane valid, if screen touched and check phase of the fingers (the first) to see if it just began
+        if(!active && placementValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) { // Checks if plane valid, if screen touched and check phase of the fingers (the first) to see if it just began
             Instantiate(objToPlace, placementPose.position, placementPose.rotation);
             active = true;
             DisablePlanes();
