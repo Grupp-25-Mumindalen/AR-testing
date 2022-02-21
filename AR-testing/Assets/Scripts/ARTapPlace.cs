@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.Experimental.XR;
-using System;
 using UnityEngine.XR.ARSubsystems; // Needed for TrackableType
 
 public class ARTapPlace : MonoBehaviour
@@ -12,6 +10,8 @@ public class ARTapPlace : MonoBehaviour
     private GameObject placement;
     [SerializeField]
     private GameObject objToPlace;
+    [SerializeField]
+    private ARSession session; 
     private Pose placementPose; // Simple data structure that represents a 3D-point
     private ARSessionOrigin arOrigin;
     private ARRaycastManager rayCastMgr; // Needed to Raycast
@@ -23,6 +23,7 @@ public class ARTapPlace : MonoBehaviour
     void Start()
     {
         arOrigin = FindObjectOfType<ARSessionOrigin>();
+        session = FindObjectOfType<ARSession>();
         rayCastMgr = this.GetComponent<ARRaycastManager>();
         arPlaneMgr = this.GetComponent<ARPlaneManager>();
     }
@@ -48,17 +49,30 @@ public class ARTapPlace : MonoBehaviour
         }
     }
 
+    /* NOT TESTED YET STILL IMPLEMENTING
+    */
+    public void resetAR() {
+        session.Reset();
+        DisablePlanes();
+        EnablePlanes();
+        active = false;
+        objToPlace.SetActive(false);
+    }
+
     public void EnablePlanes() {
         arPlaneMgr.enabled = true;
-        active = false;
-        placement.SetActive(true);
     }
 
     public void DisablePlanes() {
         arPlaneMgr.enabled = false;
-        placement.SetActive(false);
+        foreach(GameObject plane in GameObject.FindGameObjectsWithTag("Plane")) {
+            Destroy(plane);
+        }
     }
 
+    /*  ObjActive()
+        Returns the status of the Pendulum
+    */
     public bool ObjActive() {
         return active;
     }
