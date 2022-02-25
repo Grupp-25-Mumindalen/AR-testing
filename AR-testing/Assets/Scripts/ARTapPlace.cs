@@ -11,7 +11,8 @@ public class ARTapPlace : MonoBehaviour
     [SerializeField]
     private GameObject objToPlace;
     [SerializeField]
-    private ARSession session; 
+    private ARSession session;
+    private GameObject placedObject;
     private Pose placementPose; // Simple data structure that represents a 3D-point
     private ARSessionOrigin arOrigin;
     private ARRaycastManager rayCastMgr; // Needed to Raycast
@@ -35,6 +36,8 @@ public class ARTapPlace : MonoBehaviour
             UpdatePlacementPose();
             UpdatePlacementIndicator();
             PlaceObject();
+        } else {
+            resetAR();   
         }
     }
 
@@ -42,8 +45,9 @@ public class ARTapPlace : MonoBehaviour
         Checks for input and validity of placement indicator to place the object
     */
     private void PlaceObject() {
-        if(!active && placementValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) { // Checks if plane valid, if screen touched and check phase of the fingers (the first) to see if it just began
-            Instantiate(objToPlace, placementPose.position, placementPose.rotation);
+        if(placementValid && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) { // Checks if plane valid, if screen touched and check phase of the fingers (the first) to see if it just began
+            placementPose.position.y += (float) 0.5;
+            placedObject = Instantiate(objToPlace, placementPose.position, placementPose.rotation);
             active = true;
             DisablePlanes();
         }
@@ -52,19 +56,23 @@ public class ARTapPlace : MonoBehaviour
     /* NOT TESTED YET STILL IMPLEMENTING
     */
     public void resetAR() {
-        session.Reset();
-        DisablePlanes();
-        EnablePlanes();
-        active = false;
-        objToPlace.SetActive(false);
+        if(Input.touchCount > 1 && Input.GetTouch(0).phase == TouchPhase.Began) {
+            Destroy(placedObject); //or objTopPlace.SetActive(false);
+            active = false;
+            EnablePlanes();
+        }
     }
 
     public void EnablePlanes() {
         arPlaneMgr.enabled = true;
     }
 
+    /*
+        Should automatically be done when outside frame with the current AR Plane component
+    */
     public void DisablePlanes() {
         arPlaneMgr.enabled = false;
+        placement.SetActive(false);
         foreach(GameObject plane in GameObject.FindGameObjectsWithTag("Plane")) {
             Destroy(plane);
         }

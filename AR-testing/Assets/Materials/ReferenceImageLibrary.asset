@@ -16,12 +16,12 @@ MonoBehaviour:
   m_GuidHigh: 15207137155824244159
   m_Images:
   - m_SerializedGuid:
-      m_GuidLow: 5052668776252626363
-      m_GuidHigh: 13088806830426003120
+      m_GuidLow: 5396051588149245618
+      m_GuidHigh: 15273129826621459362
     m_SerializedTextureGuid:
-      m_GuidLow: 8089728107267833546
-      m_GuidHigh: 17152430838937387194
+      m_GuidLow: 16975310093327593052
+      m_GuidHigh: 15385737408047197736
     m_Size: {x: 0, y: 0}
     m_SpecifySize: 0
-    m_Name: Kermit Test
-    m_Texture: {fileID: 2800000, guid: 33313eca7cda7044ba805175f8ac09ee, type: 3}
+    m_Name: Dotted-Indicator
+    m_Texture: {fileID: 0}
