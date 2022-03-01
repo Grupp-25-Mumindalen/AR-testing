@@ -4,6 +4,11 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR.ARSubsystems; // Needed for TrackableType
 
+/*
+
+ARTapPlace handles the placement of the experiment, enable/disable planes and resetting of the experiment model
+
+*/
 public class ARTapPlace : MonoBehaviour
 {
     [SerializeField]
@@ -12,11 +17,13 @@ public class ARTapPlace : MonoBehaviour
     private GameObject objToPlace;
     [SerializeField]
     private ARSession session;
+    
     private GameObject placedObject;
     private Pose placementPose; // Simple data structure that represents a 3D-point
     private ARSessionOrigin arOrigin;
     private ARRaycastManager rayCastMgr; // Needed to Raycast
     private ARPlaneManager arPlaneMgr;
+
     private bool placementValid = false;
     private bool active = false;
 
@@ -37,7 +44,7 @@ public class ARTapPlace : MonoBehaviour
             UpdatePlacementIndicator();
             PlaceObject();
         } else {
-            resetAR();   
+            ResetAR();   
         }
     }
 
@@ -55,7 +62,7 @@ public class ARTapPlace : MonoBehaviour
 
     /* NOT TESTED YET STILL IMPLEMENTING
     */
-    public void resetAR() {
+    public void ResetAR() {
         if(Input.touchCount > 1 && Input.GetTouch(0).phase == TouchPhase.Began) {
             Destroy(placedObject); //or objTopPlace.SetActive(false);
             active = false;
@@ -63,6 +70,9 @@ public class ARTapPlace : MonoBehaviour
         }
     }
 
+    /*
+    
+    */
     public void EnablePlanes() {
         arPlaneMgr.enabled = true;
     }
@@ -76,13 +86,6 @@ public class ARTapPlace : MonoBehaviour
         foreach(GameObject plane in GameObject.FindGameObjectsWithTag("Plane")) {
             Destroy(plane);
         }
-    }
-
-    /*  ObjActive()
-        Returns the status of the Pendulum
-    */
-    public bool ObjActive() {
-        return active;
     }
 
     /*  UpdatePlacementIndicator()
@@ -121,5 +124,21 @@ public class ARTapPlace : MonoBehaviour
             var cameraBearing = new Vector3(cameraForward.x, 0, cameraForward.z).normalized; // Enhetsvektor, just a direction no scalar
             placementPose.rotation = Quaternion.LookRotation(cameraBearing); // Creates rotation from forward and upward direction
         }
+    }
+
+    // Getters of status of the AR
+
+    /*  ObjActive()
+        Returns the status of the Pendulum
+    */
+    public bool ObjActive() {
+        return active;
+    }
+
+    /*  PlacementValid()
+        Returns the status of the placement
+    */
+    public bool PlacementValid() {
+        return placementValid;
     }
 }
