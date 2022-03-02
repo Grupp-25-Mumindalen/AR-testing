@@ -26,18 +26,14 @@ public class InputManager : MonoBehaviour
                 touchPhase = Input.GetTouch(0).phase;
                 if(touchPhase == TouchPhase.Began && !place.active){
                     // If the object has not been placed, place it
-                    if(!place.active){
-                        place.PlaceObject();
-                    }
+                    place.PlaceObject();
                 }
             break;
             case 2:
                 touchPhase = Input.GetTouch(0).phase;
-                if(touchPhase == TouchPhase.Began && !place.active){
+                if(touchPhase == TouchPhase.Began && place.active){
                     // If the object has been placed, remove it
-                    if(!place.active){
-                        place.PlaceObject();
-                    }
+                        place.ResetAR();
                 }
             break;
             default:
