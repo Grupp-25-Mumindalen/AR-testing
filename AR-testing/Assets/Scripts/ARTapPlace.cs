@@ -49,7 +49,8 @@ public class ARTapPlace : MonoBehaviour
         Checks for input and validity of placement indicator to place the object
     */
     public void PlaceObject() {
-        placementPose.position.y += (float) 0.5;
+
+        placementPose.position.y += (float)0.5;
         placedObject = Instantiate(objToPlace, placementPose.position, placementPose.rotation);
         active = true;
         DisablePlanes();

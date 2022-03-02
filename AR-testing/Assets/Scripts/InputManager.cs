@@ -24,9 +24,20 @@ public class InputManager : MonoBehaviour
             break;
             case 1:
                 touchPhase = Input.GetTouch(0).phase;
-                if(touchPhase == TouchPhase.Began && !place.active){
+                if(touchPhase == TouchPhase.Began){
                     // If the object has not been placed, place it
-                    place.PlaceObject();
+                    if (!place.active)
+                    {
+                        place.PlaceObject();
+                    }
+                    else if(!PendulumusPrototypus.isActive)
+                    {
+                        EventHandler.current.PendulumSimulationStart();
+                    }
+                    else
+                    {
+                        EventHandler.current.PendulumSimulationStop();
+                    }
                 }
             break;
             case 2:
