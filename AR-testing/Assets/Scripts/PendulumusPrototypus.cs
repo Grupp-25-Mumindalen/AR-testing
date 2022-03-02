@@ -20,7 +20,7 @@ public class PendulumusPrototypus : MonoBehaviour
 
 
     [Header("Real hot variables in your area")]
-    private static float simulationSpeed = 300;
+    private static float simulationSpeed = 100;
     [SerializeField] int formerDirection = 0;
     [SerializeField] int formerSpeedDirection = 0;
     int phaseCounter = 0;
